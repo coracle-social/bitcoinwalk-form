@@ -241,7 +241,9 @@
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              name: document.getElementById('name').value,
+              name: 'BitcoinWalk ' + document.getElementById('name').value,
+              image: 'https://bitcoinwalk.org/wp-content/uploads/2025/04/cropped-Bitcoin-Walk-Logo-avatar.png',
+              description: 'A BitcoinWalk community for ' + document.getElementById('name').value,
               pubkey: document.getElementById('pubkey').value,
               metadata: {
                 location: document.getElementById('location').value
