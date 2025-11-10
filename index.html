@@ -4,6 +4,8 @@
     <title>BitcoinWalk</title>
     <link rel="icon" type="image/png" href="/assets/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nonboard@1.0.7/dist/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
       :root {
@@ -11,19 +13,26 @@
         --nb-primary-alt: #ed8b15;
         --nb-primary-content: #ffffff;
       }
+
+      #map {
+        height: 400px;
+        width: 100%;
+        border-radius: 0.5rem;
+        z-index: 0;
+      }
     </style>
   </head>
   <body class="bg-gray-50 min-h-screen">
     <div class="max-w-md mx-auto pt-12 px-4">
       <div class="bg-white rounded-lg p-8">
         <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">BitcoinWalk</h1>
-          <h2 class="text-xl text-gray-600">Start a Meetup</h2>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Start a BitcoinWalk</h1>
+          <h2 class="text-xl text-gray-600">In your city</h2>
         </div>
 
         <div class="mb-6 p-4 bg-amber-50 rounded-lg">
           <p class="text-sm text-amber-800">
-            <strong>Note:</strong> Before you submit your application, please check
+            <strong>Note:</strong> Please check
             our <a class="underline decoration-solid" href="https://bitcoinwalk.org/join-bitcoinwalk/" target="_blank">list of existing locations</a> to
             see whether there is already a BitcoinWalk established in your area.
           </p>
@@ -53,20 +62,34 @@
 
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-              Meetup Name (City)
+              Location (City)
             </label>
             <input type="text" id="name" name="name" required placeholder="e.g., San Francisco" class="nb-input w-full">
           </div>
 
           <div>
-            <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
-              Google Maps Link
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Meeting Point Location
             </label>
-            <input type="url" id="location" name="location" required placeholder="https://maps.google.com/..." class="nb-input w-full">
-            <p class="mt-1 text-xs text-gray-500">Paste the Google Maps link to your meetup location</p>
+            <div id="map"></div>
+            <p class="mt-1 text-xs text-gray-500">Click or drag the marker to set your meetup location</p>
+            <input type="hidden" id="latitude" name="latitude" required>
+            <input type="hidden" id="longitude" name="longitude" required>
           </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              When is your first BitcoinWalk?
+            </label>
+            <div class="flex gap-4">
+              <input type="date" id="date" name="date" required class="nb-input w-full">
+              <input type="time" id="time" name="time" required class="nb-input w-full">
+            </div>
+            <p class="mt-1 text-xs text-gray-500">You can change this later</p>
+          </div>
+
           <button type="submit" id="submitBtn" class="nb-button nb-button-primary w-full">
-            Start a Bitcoin Walk!
+            Start a BitcoinWalk!
           </button>
         </form>
       </div>
@@ -111,7 +134,7 @@
 
       const app = nb({
         appUrl: window.origin,
-        appName: "Bitcoin Walk",
+        appName: "BitcoinWalk",
         appImage: "https://hbr.coracle.social/595c5702f0e17714f91cf19d0c00c6323270332489fe431839e6730ab5b91ba3.jpg",
         onSignup: payload => handleAuth('signup', payload),
         onLogin: payload => handleAuth('login', payload),
@@ -126,6 +149,65 @@
         <img src="/assets/login.svg" class="w-5 h-5 mr-2 inline" alt="Login icon">
         Log in with Nostr
       `;
+
+      // Initialize map
+      let map = null;
+      let marker = null;
+
+      function initMap(lat, lng) {
+        if (map) {
+          map.remove();
+        }
+
+        map = L.map('map').setView([lat, lng], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          maxZoom: 19,
+        }).addTo(map);
+
+        // Add draggable marker
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+
+        // Update hidden inputs when marker is moved
+        function updateLocation(latlng) {
+          document.getElementById('latitude').value = latlng.lat;
+          document.getElementById('longitude').value = latlng.lng;
+          document.getElementById('latitude').setCustomValidity('');
+          document.getElementById('longitude').setCustomValidity('');
+        }
+
+        // Initialize with current position
+        updateLocation(marker.getLatLng());
+
+        // Handle marker drag
+        marker.on('dragend', function(e) {
+          updateLocation(e.target.getLatLng());
+        });
+
+        // Handle map click to move marker
+        map.on('click', function(e) {
+          marker.setLatLng(e.latlng);
+          updateLocation(e.latlng);
+        });
+      }
+
+      // Get user's current location and initialize map
+      document.getElementById('latitude').setCustomValidity('Please wait while we get your location...');
+      document.getElementById('longitude').setCustomValidity('Please wait while we get your location...');
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            initMap(position.coords.latitude, position.coords.longitude);
+          },
+          (error) => {
+            initMap(35.8989, 14.5146);
+          }
+        );
+      } else {
+        initMap(35.8989, 14.5146);
+      }
 
       async function handleAuth(type, payload) {
         currentUser = payload;
@@ -250,7 +332,10 @@
               description: 'A BitcoinWalk community for ' + document.getElementById('name').value,
               pubkey: document.getElementById('pubkey').value,
               metadata: {
-                location: document.getElementById('location').value
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value
               },
             })
           });
@@ -264,7 +349,7 @@
           console.error('Error submitting form:', error);
           alert('There was an error submitting your application. Please try again.');
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Start a Bitcoin Walk!';
+          submitBtn.textContent = 'Start a BitcoinWalk!';
         }
       });
 
