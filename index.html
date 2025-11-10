@@ -23,7 +23,7 @@
     </style>
   </head>
   <body class="bg-gray-50 min-h-screen">
-    <div class="max-w-md mx-auto pt-12 px-4">
+    <div class="max-w-lg mx-auto pt-12 px-4">
       <div class="bg-white rounded-lg p-8">
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900 mb-2">Start a BitcoinWalk</h1>
@@ -307,6 +307,11 @@
 
       document.getElementById('signupForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        if (!currentUser) {
+          alert('Please log in with your Nostr account before submitting.');
+          return;
+        }
 
         if (!hasInboxRelays) {
           if (confirm("You don't currently have any relays set up for receiving direct messages. Please confirm that you'd like us to set some up for you.")) {

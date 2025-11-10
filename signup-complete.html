@@ -15,50 +15,29 @@
   </head>
   <body class="bg-gray-50 min-h-screen">
     <div class="max-w-xl mx-auto pt-12 px-4">
-      <div class="bg-white rounded-lg p-8">
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">BitcoinWalk</h1>
-          <h2 class="text-xl text-gray-600">Application Submitted!</h2>
+      <div class="bg-white rounded-lg p-8 flex flex-col gap-6">
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Application Recieved!</h1>
+          <h2 class="text-gray-600">Just one more thing...</h2>
         </div>
-
-        <div class="mb-6 p-6 bg-green-50 rounded-lg text-center">
-          <div class="mb-4">
-            <svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-green-800 mb-2">Thank you for your application!</h3>
-          <p class="text-sm text-green-700">
-            We've received your request to start a BitcoinWalk meetup. We'll review your application and get back to you soon.
+        <div class="flex flex-col gap-4">
+          <h3 class="text-2xl">What's next?</h3>
+          <p>
+            We'll review your application and get back to you soon.
+          </p>
+          <p>
+            In the meantime, you can join our organizers group to get access to support, and chat with other organizers.
           </p>
         </div>
-
-        <div class="mb-6 p-4 bg-blue-50 rounded-lg">
-          <h4 class="font-semibold text-blue-800 mb-2">What happens next?</h4>
-          <div class="space-y-1">
-            <p class="text-sm text-blue-700">
-              We'll review your application and get in touch soon. In the meantime, you'll want to:
-            </p>
-            <ul class="text-sm text-blue-700 space-y-1">
-              <li>&bull; Download a <a href="https://nostrapps.com/#signers" target="_blank" class="underline text-decoration-solid">Nostr signing app</a> and store your private key.</li>
-              <li>&bull; Visit <a href="https://app.flotilla.social/" target="_blank" class="underline text-decoration-solid">Flotilla</a> and sign in using your signing app.</li>
-              <li>&bull; Watch your inbox for a Nostr direct message from us with further instructions.</li>
-            </ul>
-          </div>
+        <div class="flex flex-col gap-2">
+          <a href="/getting-started" class="nb-button nb-button-primary w-full">
+            Getting Started Guide
+          </a>
+          <a href="https://flotilla.social" target="_blank" class="nb-button w-full text-center flex items-center justify-center gap-2">
+            <img src="/assets/flotilla.png" alt="Flotilla" class="w-8 h-8 -my-3">
+            Install Flotilla
+          </a>
         </div>
-
-        <div class="mb-6 p-4 bg-amber-50 rounded-lg">
-          <p class="text-sm text-amber-800">
-            <strong>Questions?</strong> Feel free to reach out to us at
-            <a class="underline decoration-solid" href="mailto:hello@bitcoinwalk.org">hello@bitcoinwalk.org</a>
-            or check out our <a class="underline decoration-solid" href="https://bitcoinwalk.org" target="_blank">website</a>
-            for more information.
-          </p>
-        </div>
-
-        <a href="https://bitcoinwalk.org" target="_blank" class="nb-button nb-button-primary w-full text-center">
-          Back to BitcoinWalk
-        </a>
       </div>
     </div>
   </body>
