@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>BitcoinWalk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
     <link rel="icon" type="image/png" href="/assets/logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nonboard@1.0.7/dist/index.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -23,24 +24,22 @@
     </style>
   </head>
   <body class="bg-gray-50 min-h-screen">
-    <div class="max-w-lg mx-auto pt-12 px-4">
-      <div class="bg-white rounded-lg p-8">
+    <div class="max-w-lg mx-auto sm:py-12 sm:px-4">
+      <div class="bg-white sm:rounded-lg p-8">
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-gray-900 mb-2">Start a BitcoinWalk</h1>
           <h2 class="text-xl text-gray-600">In your city</h2>
         </div>
 
-        <div class="mb-6 p-4 bg-amber-50 rounded-lg">
-          <p class="text-sm text-amber-800">
-            <strong>Note:</strong> Please check
-            our <a class="underline decoration-solid" href="https://bitcoinwalk.org/join-bitcoinwalk/" target="_blank">list of existing locations</a> to
-            see whether there is already a BitcoinWalk established in your area.
-          </p>
+        <div class="mb-6 text-sm text-gray-600">
+          <strong>Note:</strong> Please check
+          our <a class="underline decoration-solid" href="https://bitcoinwalk.org/join-bitcoinwalk/" target="_blank">list of existing locations</a> to
+          see whether there is already a BitcoinWalk established in your area.
         </div>
 
         <form id="signupForm" action="/application/create/" method="POST" class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block font-medium text-gray-700 mb-2">
               Nostr Account
             </label>
             <div id="nostrField">
@@ -61,14 +60,14 @@
           </div>
 
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="name" class="block font-medium text-gray-700 mb-2">
               Location (City)
             </label>
             <input type="text" id="name" name="name" required placeholder="e.g., San Francisco" class="nb-input w-full">
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block font-medium text-gray-700 mb-2">
               Meeting Point Location
             </label>
             <div id="map"></div>
@@ -78,7 +77,7 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
+            <label class="block font-medium text-gray-700 mb-2">
               When is your first BitcoinWalk?
             </label>
             <div class="flex gap-4">
